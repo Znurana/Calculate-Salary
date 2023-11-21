@@ -15,8 +15,10 @@ namespace MyApplication
             float totalSalary = 0;  //totalsalary=benefit+child+familsupport
             float netSalary = 0;
             float taxValue = 0;
-            float ratio = 1; // 1 emsal
+            float ratio = 1;
+            float taxPersentage = 0;// 1 emsal
 
+            //1. data recieve
 
             Console.WriteLine("Enter your Gross Salary: (use the number to write)");
             int grossSalary = Convert.ToInt32(Console.ReadLine());
@@ -25,6 +27,11 @@ namespace MyApplication
             string martialStatus = Console.ReadLine();
             Console.WriteLine("Enter your disabled status:(Yes/No)");
             string disabled = Console.ReadLine();
+
+            if (disabled.ToLower() == DisabledStatus.Yes.ToString().ToLower())
+            {
+                ratio = ratio * 0.5f;
+            }
 
 
             if (martialStatus.ToLower() != MartialStatus.Single.ToString().ToLower())
@@ -60,74 +67,46 @@ namespace MyApplication
             }
 
 
+            //2. data calculate 
             Console.WriteLine("***********************************************");
 
-            if (disabled.ToLower() == DisabledStatus.No.ToString().ToLower())
+
+            if (totalSalary <= 1000)
             {
-                if (totalSalary <= 1000)
-                {
-                    taxValue = totalSalary * (15 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-                }
-                else if (grossSalary > 1000 && grossSalary <= 2000)
-                {
-                    Console.WriteLine("Tax percentage: 20 %");
-                    taxValue = totalSalary * (20 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-
-                }
-                else if (grossSalary > 2000 && grossSalary < 3000)
-                {
-                    Console.WriteLine("Tax percentage: 25 %");
-                    taxValue = totalSalary * (25 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-                }
-                else if (grossSalary >= 3000)
-                {
-                    Console.WriteLine("Tax percentage: 30 %");
-                    taxValue = totalSalary * (30 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-
-                }
-
+                taxPersentage = 15 * ratio;
+                taxValue = totalSalary * taxPersentage / 100;
+                netSalary = totalSalary - taxValue;
+            }
+            else if (grossSalary > 1000 && grossSalary <= 2000)
+            {
+                taxPersentage = 20 * ratio;
+                taxValue = totalSalary * taxPersentage / 100;
+                netSalary = totalSalary - taxValue;
 
             }
-            else
+            else if (grossSalary > 2000 && grossSalary < 3000)
             {
+                taxPersentage = 25 * ratio;
+                taxValue = totalSalary * taxPersentage / 100;
+                netSalary = totalSalary - taxValue;
+            }
+            else if (grossSalary >= 3000)
+            {
+                taxPersentage = 30 * ratio;
+                taxValue = totalSalary * taxPersentage / 100;
+                netSalary = totalSalary - taxValue;
 
-                ratio = ratio * 0.5f;
-                if (totalSalary <= 1000)
-                {
-                    taxValue = totalSalary * (15 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-                }
-                else if (grossSalary > 1000 && grossSalary <= 2000)
-                {
-                    Console.WriteLine("Tax percentage: 10 %");
-                    taxValue = totalSalary * (20 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-
-                }
-                else if (grossSalary > 2000 && grossSalary < 3000)
-                {
-                    Console.WriteLine("Tax percentage: 22.5 %");
-                    taxValue = totalSalary * (25 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-                }
-                else if (grossSalary >= 3000)
-                {
-                    Console.WriteLine("Tax percentage: 15 %");
-                    taxValue = totalSalary * (30 * ratio) / 100;
-                    netSalary = totalSalary - taxValue;
-
-                }
             }
 
 
+            //3. show result 
             Console.WriteLine("Gross salary: " + Math.Round(totalSalary, 2));
             Console.WriteLine("Net salary :" + Math.Round(netSalary));
+            Console.WriteLine("Tax percentage :" + Math.Round(taxPersentage, 2));
             Console.WriteLine("Tax fee :" + Math.Round(taxValue, 2));
 
+
+            //4. generate new algoritm  
 
             int[] availableMoney = { 200, 100, 50, 20, 10, 1 };
 
@@ -140,9 +119,6 @@ namespace MyApplication
                     Console.WriteLine($"{count} x {i}");
                     netSalary %= i;
                 }
-
-
-
 
 
             }
